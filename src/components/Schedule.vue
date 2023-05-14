@@ -57,7 +57,7 @@ export default {
       <thead>
         <tr>
           <th></th>
-          <th class="day" :class="`day--${index}`" v-for="(meeting, index) in meetings" :key="index">
+          <th class="day" :class="`day--${index}`" v-for="(_meeting, index) in meetings" :key="index">
             {{ format(index, 'M/D（dd）') }}
           </th>
         </tr>
@@ -65,7 +65,7 @@ export default {
       <tbody>
         <tr :class="`hour--${hour}`" v-for="hour of workingHours" :key="hour">
           <th class="hour" > {{ hour }}:00 </th>
-          <td v-for="(meeting, index) in meetings" :key="index"></td>
+          <td v-for="(_meeting, index) in meetings" :key="index"></td>
         </tr>
       </tbody>
     </table>
