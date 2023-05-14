@@ -1,4 +1,4 @@
-<script>
+<script setup>
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 
@@ -6,49 +6,45 @@ dayjs.locale('ja');
 
 const SCHEDULE_HEIGHT = 80; // 1時間の高さ
 
-export default {
-  props: {
-    workingHours: {
-      type: Array,
-      required: true,
-    },
-    meetings: {
-      type: Object,
-      required: true,
-    },
+const props = defineProps({
+  workingHours: {
+    type: Array,
+    required: true,
   },
-  mounted() {
-    window.addEventListener('load', function () {
-      document.querySelectorAll('.meeting').forEach(function(meeting) {
-        // 横方向
-        const index = meeting.dataset.index;
-        const dayElement = document.querySelector(`.day--${index}`);
-        meeting.style.left = `${dayElement.offsetLeft}px`;
-
-        // 縦方向
-        const item = JSON.parse(meeting.dataset.item);
-        const startTime = dayjs().hour(item.start.split(':')[0]).minute(item.start.split(':')[1]);
-        const endTime = dayjs().hour(item.end.split(':')[0]).minute(item.end.split(':')[1]);
-
-        const startElement = document.querySelector(`.hour--${item.start.split(':')[0]}`);
-        const startMinOffset = startTime.minute() === 0 ? 0 : SCHEDULE_HEIGHT * startTime.minute() / 60;
-        meeting.style.top = `${startElement.offsetTop + startMinOffset}px`;
-
-        // 高さ
-        const diff = endTime.diff(startTime, 'minute');
-        meeting.style.height = `${SCHEDULE_HEIGHT * diff / 60}px`;
-
-        // 表示
-        meeting.style.display = 'block';
-      })
-    })
+  meetings: {
+    type: Object,
+    required: true,
   },
-  methods: {
-    format(date, format) {
-      return dayjs(date).format(format);
-    },
-  }
-}
+});
+
+const format = (date, format) => {
+  return dayjs(date).format(format);
+};
+
+onMounted(() => {
+  document.querySelectorAll('.meeting').forEach((meeting) => {
+    // 横方向
+    const index = meeting.dataset.index;
+    const dayElement = document.querySelector(`.day--${index}`);
+    meeting.style.left = `${dayElement.offsetLeft}px`;
+
+    // 縦方向
+    const item = JSON.parse(meeting.dataset.item);
+    const startTime = dayjs().hour(item.start.split(':')[0]).minute(item.start.split(':')[1]);
+    const endTime = dayjs().hour(item.end.split(':')[0]).minute(item.end.split(':')[1]);
+
+    const startElement = document.querySelector(`.hour--${item.start.split(':')[0]}`);
+    const startMinOffset = startTime.minute() === 0 ? 0 : SCHEDULE_HEIGHT * startTime.minute() / 60;
+    meeting.style.top = `${startElement.offsetTop + startMinOffset}px`;
+
+    // 高さ
+    const diff = endTime.diff(startTime, 'minute');
+    meeting.style.height = `${SCHEDULE_HEIGHT * diff / 60}px`;
+
+    // 表示
+    meeting.style.display = 'block';
+  })
+});
 </script>
 
 <template>
