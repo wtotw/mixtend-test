@@ -19,7 +19,7 @@ export default {
   },
   mounted() {
     window.addEventListener('load', function () {
-      document.querySelectorAll('.meeting').forEach((meeting) => {
+      document.querySelectorAll('.meeting').forEach(function(meeting) {
         // 横方向
         const index = meeting.dataset.index;
         const dayElement = document.querySelector(`.day--${index}`);
