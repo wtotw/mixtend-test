@@ -19,8 +19,7 @@ export default {
   },
   mounted() {
     window.addEventListener('load', function () {
-      const meetings = document.querySelectorAll('.meeting');
-      meetings.forEach((meeting) => {
+      document.querySelectorAll('.meeting').forEach((meeting) => {
         // 横方向
         const index = meeting.dataset.index;
         const dayElement = document.querySelector(`.day--${index}`);
