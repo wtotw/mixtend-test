@@ -17,7 +17,12 @@ const response = await useFetch('https://mixtend.github.io/schedule.json', {
     'User-Agent': 'Mixtend Coding Test',
   },
 });
-$log.debug(response)
+try {
+  $log.debug(response)
+  fs.writeFile('log.txt', JSON.stringify(response, null, '  '), (err) => { console.error(err); });
+} catch (err) {
+  // fsはNodeのmoduleなのでブラウザ側ではエラー
+}
 
 const { data } = response;
 
