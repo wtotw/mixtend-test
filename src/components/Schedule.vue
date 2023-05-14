@@ -4,6 +4,8 @@ import 'dayjs/locale/ja';
 
 dayjs.locale('ja');
 
+const SCHEDULE_HEIGHT = 80; // 1時間の高さ
+
 export default {
   props: {
     workingHours: {
@@ -30,12 +32,12 @@ export default {
         const endTime = dayjs().hour(item.end.split(':')[0]).minute(item.end.split(':')[1]);
 
         const startElement = document.querySelector(`.hour--${item.start.split(':')[0]}`);
-        const startMinOffset = startTime.minute() === 0 ? 0 : 80 * startTime.minute() / 60;
+        const startMinOffset = startTime.minute() === 0 ? 0 : SCHEDULE_HEIGHT * startTime.minute() / 60;
         meeting.style.top = `${startElement.offsetTop + startMinOffset}px`;
 
         // 高さ
         const diff = endTime.diff(startTime, 'minute');
-        meeting.style.height = `${80 * diff / 60}px`;
+        meeting.style.height = `${SCHEDULE_HEIGHT * diff / 60}px`;
 
         // 表示
         meeting.style.display = 'block';
