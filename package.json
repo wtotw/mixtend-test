@@ -13,6 +13,7 @@
     "nuxt": "^3.4.3"
   },
   "dependencies": {
-    "dayjs": "^1.11.7"
+    "dayjs": "^1.11.7",
+    "loglevel": "^1.8.1"
   }
 }

@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 
 import ScheduleView from '~/components/ScheduleView.vue';
 
+const { $log } = useNuxtApp();
+
 const state = reactive({
   workingHours: [],
   meetings: {},
@@ -15,12 +17,7 @@ const response = await useFetch('https://mixtend.github.io/schedule.json', {
     'User-Agent': 'Mixtend Coding Test',
   },
 });
-
-try {
-  fs.writeFile('log.txt', JSON.stringify(response, null, '  '), (err) => { console.error(err); });
-} catch (err) {
-  // fsはNodeのmoduleなのでブラウザ側ではエラー
-}
+$log.debug(response)
 
 const { data } = response;
 
