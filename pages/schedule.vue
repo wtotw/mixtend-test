@@ -1,4 +1,5 @@
 <script setup>
+import fs from 'fs';
 import { reactive } from 'vue';
 import dayjs from 'dayjs';
 
@@ -9,11 +10,19 @@ const state = reactive({
   meetings: {},
 });
 
-const { data } = await useFetch('https://mixtend.github.io/schedule.json', {
+const response = await useFetch('https://mixtend.github.io/schedule.json', {
   headers: {
     'User-Agent': 'Mixtend Coding Test',
   },
 });
+
+try {
+  fs.writeFile('log.txt', JSON.stringify(response, null, '  '), (err) => { console.error(err); });
+} catch (err) {
+  // fsはNodeのmoduleなのでブラウザ側ではエラー
+}
+
+const { data } = response;
 
 if (data) {
   // workingHours
