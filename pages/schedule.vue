@@ -1,18 +1,19 @@
-<script setup>
+<script setup lang="ts">
 import fs from 'fs';
 import { reactive } from 'vue';
 import dayjs from 'dayjs';
 
 import ScheduleView from '~/components/ScheduleView.vue';
+import { ScheduleResponse } from '~/types/schedule';
 
 const { $log } = useNuxtApp();
 
 const state = reactive({
-  workingHours: [],
+  workingHours: [] as number[],
   meetings: {},
 });
 
-const response = await useFetch('https://mixtend.github.io/schedule.json', {
+const response = await useFetch<ScheduleResponse>('https://mixtend.github.io/schedule.json', {
   headers: {
     'User-Agent': 'Mixtend Coding Test',
   },
@@ -26,11 +27,11 @@ try {
 
 const { data } = response;
 
-if (data) {
+if (data.value) {
   // workingHours
   const workingHours = data.value.working_hours;
-  const startTime = dayjs().hour(workingHours.start.split(':')[0]).minute(workingHours.start.split(':')[1])
-  const endTime = dayjs().hour(workingHours.end.split(':')[0]).minute(workingHours.end.split(':')[1])
+  const startTime = dayjs().hour(parseInt(workingHours.start.split(':')[0])).minute(parseInt(workingHours.start.split(':')[1]));
+  const endTime = dayjs().hour(parseInt(workingHours.end.split(':')[0])).minute(parseInt(workingHours.end.split(':')[1]));
   state.workingHours = [...Array(endTime.diff(startTime, 'hour') + 1).keys()].map(i => i + startTime.hour());
 
   // meetings

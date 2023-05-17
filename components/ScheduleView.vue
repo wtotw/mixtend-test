@@ -1,41 +1,37 @@
-<script setup>
+<script setup lang="ts">
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
+
+import { WorkingHours, Meeting } from '~/types/schedule';
 
 dayjs.locale('ja');
 
 const SCHEDULE_HEIGHT = 80; // 1時間の高さ
 
-const props = defineProps({
-  workingHours: {
-    type: Array,
-    required: true,
-  },
-  meetings: {
-    type: Object,
-    required: true,
-  },
-});
+const props = defineProps<{
+  workingHours: WorkingHours,
+  meetings: Meeting,
+}>();
 
-const format = (date, format) => {
+const format = (date: string, format: string) => {
   return dayjs(date).format(format);
 };
 
 onMounted(() => {
-  document.querySelectorAll('.meeting').forEach((meeting) => {
+  document.querySelectorAll<HTMLElement>('.meeting').forEach((meeting) => {
     // 横方向
     const index = meeting.dataset.index;
-    const dayElement = document.querySelector(`.day--${index}`);
-    meeting.style.left = `${dayElement.offsetLeft}px`;
+    const dayElement = document.querySelector<HTMLElement>(`.day--${index}`);
+    meeting.style.left = `${dayElement?.offsetLeft || 0}px`;
 
     // 縦方向
-    const item = JSON.parse(meeting.dataset.item);
-    const startTime = dayjs().hour(item.start.split(':')[0]).minute(item.start.split(':')[1]);
-    const endTime = dayjs().hour(item.end.split(':')[0]).minute(item.end.split(':')[1]);
+    const item = JSON.parse(meeting.dataset.item!) as Meeting;
+    const startTime = dayjs().hour(parseInt(item.start.split(':')[0])).minute(parseInt(item.start.split(':')[1]));
+    const endTime = dayjs().hour(parseInt(item.end.split(':')[0])).minute(parseInt(item.end.split(':')[1]));
 
-    const startElement = document.querySelector(`.hour--${item.start.split(':')[0]}`);
+    const startElement = document.querySelector<HTMLElement>(`.hour--${item.start.split(':')[0]}`);
     const startMinOffset = startTime.minute() === 0 ? 0 : SCHEDULE_HEIGHT * startTime.minute() / 60;
-    meeting.style.top = `${startElement.offsetTop + startMinOffset}px`;
+    meeting.style.top = `${(startElement?.offsetTop || 0) + startMinOffset}px`;
 
     // 高さ
     const diff = endTime.diff(startTime, 'minute');
