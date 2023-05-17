@@ -9,8 +9,8 @@ dayjs.locale('ja');
 const SCHEDULE_HEIGHT = 80; // 1時間の高さ
 
 const props = defineProps<{
-  workingHours: WorkingHours,
-  meetings: Meeting,
+  workingHours: number[],
+  meetings: { [key: string]: Meeting[] },
 }>();
 
 const format = (date: string, format: string) => {
@@ -50,7 +50,7 @@ onMounted(() => {
         <tr>
           <th></th>
           <th class="day" :class="`day--${index}`" v-for="(_meeting, index) in meetings" :key="index">
-            {{ format(index, 'M/D（dd）') }}
+            {{ format(index as string, 'M/D（dd）') }}
           </th>
         </tr>
       </thead>
@@ -63,7 +63,7 @@ onMounted(() => {
     </table>
 
     <template v-for="(meeting, index) in meetings" :key="index">
-      <div class="meeting" v-for="item of meeting" :key="item" :data-index="index" :data-item="JSON.stringify(item)">
+      <div class="meeting" v-for="item, key in meeting" :key="key" :data-index="index" :data-item="JSON.stringify(item)">
         {{ item.summary }}
       </div>
     </template>

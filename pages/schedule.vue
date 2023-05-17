@@ -4,13 +4,13 @@ import { reactive } from 'vue';
 import dayjs from 'dayjs';
 
 import ScheduleView from '~/components/ScheduleView.vue';
-import { ScheduleResponse } from '~/types/schedule';
+import { Meeting, ScheduleResponse } from '~/types/schedule';
 
 const { $log } = useNuxtApp();
 
 const state = reactive({
   workingHours: [] as number[],
-  meetings: {},
+  meetings: {} as { [key: string]: Meeting[] },
 });
 
 const response = await useFetch<ScheduleResponse>('https://mixtend.github.io/schedule.json', {
