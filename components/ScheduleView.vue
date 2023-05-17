@@ -78,6 +78,7 @@ onMounted(() => {
 table, th, td {
   border: 1px solid #d4d4d4;
   border-collapse: collapse;
+  font-weight: normal;
 }
 
 .day {
