@@ -2,7 +2,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 
-import { WorkingHours, Meeting } from '~/types/schedule';
+import { Meeting } from '~/types/schedule';
 
 dayjs.locale('ja');
 
